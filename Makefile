@@ -22,3 +22,5 @@ lint:
 	pylint --ignore=tests --disable=R,C,W1203,E0611 api 
 
 all: setup install lint test
+
+init: setup install
