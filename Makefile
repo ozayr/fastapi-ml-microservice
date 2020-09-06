@@ -18,6 +18,7 @@ test:
 
 lint:
 	hadolint Dockerfile
+	source $(PY_ENV)/bin/activate;
 	pylint --ignore=tests --disable=R,C,W1203,E0611 api 
 
 all: setup install lint test

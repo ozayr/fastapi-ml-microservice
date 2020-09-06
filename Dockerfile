@@ -4,7 +4,8 @@ COPY ./api /api/api
 COPY requirements.txt /requirements.txt
 
 RUN apt-get update \
-    && pip3 install -r requirements.txt
+    && pip3 install -r requirements.txt \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONPATH=/api
 WORKDIR /api
