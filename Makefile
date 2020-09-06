@@ -7,7 +7,6 @@ setup:
 		chmod +x /bin/hadolint; \
 	fi;
 
-
 install:
 	source $(PY_ENV)/bin/activate && \
 	pip install --upgrade pip && \
