@@ -9,17 +9,16 @@ setup:
 
 
 install:
-	source $(PY_ENV)/bin/activate; \
+	source $(PY_ENV)/bin/activate && \
 	pip install --upgrade pip && \
 	pip install -r requirements.txt
 
 test:
-	pytest
+	source $(PY_ENV)/bin/activate && pytest
 
 lint:
-	hadolint Dockerfile
-	source $(PY_ENV)/bin/activate;
-	pylint --ignore=tests --disable=R,C,W1203,E0611 api 
+	hadolint Dockerfile; 
+	source $(PY_ENV)/bin/activate && pylint --ignore=tests --disable=R,C,W1203,E0611 api; 
 
 all: setup install lint test
 
