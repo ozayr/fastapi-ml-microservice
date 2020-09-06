@@ -1,5 +1,5 @@
-
 PY_ENV =new-env
+SHELL=/bin/bash
 setup:
 	python3 -m venv $(PY_ENV); \
 	if [ ! -f "/bin/hadolint" ]; then \
@@ -20,7 +20,4 @@ lint:
 	hadolint Dockerfile
 	pylint --ignore=tests --disable=R,C,W1203,E0611 api 
 
-init: setup install 
-
-all: setup install
-
+all: setup install lint test
