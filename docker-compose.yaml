@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  fastapi-ml:
+    image: ozayr0116/fastapi-ml:slim     
+    build:
+        context: .
+        dockerfile: Dockerfile_py
+    
+    ports:
+      - 8000:8000
+
+networks:
+    default:
+        driver: bridge
