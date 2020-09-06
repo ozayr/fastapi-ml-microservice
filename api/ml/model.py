@@ -29,21 +29,26 @@ class Model:
     def load(self):
         try:
             self._model = joblib.load(self._model_path)
-        except:
+        except FileNotFoundError:
             self._model = None
         return self
 
 
-model_path = Path(__file__).parent / "model.joblib"
+def get_model_path():
+    return Path(__file__).parent / "model.joblib"
+
+
 n_features = load_boston(return_X_y=True)[0].shape[1]
-model = Model(model_path)
+model = Model(get_model_path())
 
 
 def get_model():
     return model
 
-
-if __name__ == "__main__":
+def main():
     X, y = load_boston(return_X_y=True)
     model.train(X, y)
     model.save()
+
+if __name__ == "__main__":
+    main()

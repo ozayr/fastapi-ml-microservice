@@ -5,7 +5,7 @@ services:
     image: ozayr0116/fastapi-ml:slim     
     build:
         context: .
-        dockerfile: Dockerfile_py
+        dockerfile: Dockerfile
     
     ports:
       - 8000:8000
