@@ -1,0 +1,1 @@
+curl -X POST "http://ec2-18-237-48-108.us-west-2.compute.amazonaws.com:8000/predict"" -H "Content-Type: application/json" -d "{\"data\":[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}"
