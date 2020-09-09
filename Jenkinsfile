@@ -6,16 +6,16 @@ pipeline{
         // }}
         stage('setup'){
             steps{
-                python3 -m venv test_env && source test_env/bin/activate;
+                sh 'python3 -m venv test_env && source test_env/bin/activate'
         }}
         stage('lint'){
             steps{
                 hadolint Dockerfile;
-	            pylint --ignore=tests --disable=R,C,W1203,E0611 api;
+	            sh 'pylint --ignore=tests --disable=R,C,W1203,E0611 api'
         }}
         stage('test'){
             steps{
-                pytest
+                sh 'pytest'
         }}
         // stage(){steps{}}
     }
