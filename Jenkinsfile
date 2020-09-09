@@ -9,10 +9,10 @@ pipeline{
                 sh 'ls'
                 sh 'python3 -m venv test_env'
                 sh 'source test_env/bin/activate'
-                sh 'pip install --upgrade pip --user'
-	            sh 'pip install -r requirements.txt --user'
-                sh 'wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64' 
-		        sh 'chmod +x /bin/hadolint'
+                sh 'sudo pip install --upgrade pip '
+	            sh 'sudo pip install -r requirements.txt'
+                sh 'sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64' 
+		        sh 'sudo chmod +x /bin/hadolint'
         }}
         stage('lint'){
             steps{
