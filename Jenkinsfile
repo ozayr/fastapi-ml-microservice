@@ -24,6 +24,10 @@ pipeline{
                 sh 'pytest'
         }}
         // stage(){steps{}}
-
+    }
+    post { 
+        always { 
+           deleteDir()
+        }
     }
 }
