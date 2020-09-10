@@ -42,7 +42,7 @@ pipeline{
                 sh 'docker run --rm -d -p 8000:8000 --name image_test ozayr0116/ml_microservice'   
                 sh 'sleep 5'
                 script {
-                    final String response = sh(script: 'curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d "{\"data\":[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}"', returnStdout: true).trim()
+                    final String response = sh(script: 'curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d "{\'data\':[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}"', returnStdout: true).trim()
                     echo response
                 }
                 sh 'docker container stop image_test'
