@@ -1,5 +1,10 @@
 pipeline{
-    agent {docker {image  'python:3.7-buster'}}
+    agent {
+        docker {
+            image  'python:3.7-buster'
+             args '--user 0:0'
+            }
+        }
     stages{
         // stage('checkout'){steps{
         //     git 'https://github.com/ozayr/fastapi-ml-microservice.git'
@@ -9,13 +14,13 @@ pipeline{
                 // sh 'python3 -m venv test_env'
                 // sh 'source test_env/bin/activate'
                 
-                withEnv(['HOME=${env.WORKSPACE}']) {
-                    sh 'pip install --upgrade pip'
-	                sh 'pip install -r requirements.txt'
+                // withEnv(['HOME=${env.WORKSPACE}']) {
+                sh 'pip install --upgrade pip'
+                sh 'pip install -r requirements.txt'
                 //  python stuff
-                    sh 'wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64' 
-                    sh 'chmod +x /bin/hadolint'
-                }
+                // }
+                sh 'wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64' 
+                sh 'chmod +x /bin/hadolint'
 
                 
         }}
