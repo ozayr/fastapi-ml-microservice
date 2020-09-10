@@ -6,11 +6,15 @@ pipeline{
         // }}
         stage('setup'){
             steps{
-                sh 'whoami'
                 // sh 'python3 -m venv test_env'
                 // sh 'source test_env/bin/activate'
-                sh 'pip install --upgrade pip '
-	            sh 'pip install -r requirements.txt'
+                
+                withEnv(['HOME=${env.WORKSPACE}']) {
+                    sh 'pip install --upgrade pip'
+	                sh 'pip install -r requirements.txt'
+                //  python stuff
+                }
+
                 sh 'wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64' 
 		        sh 'chmod +x /bin/hadolint'
         }}
@@ -25,9 +29,9 @@ pipeline{
         }}
         // stage(){steps{}}
     }
-    post { 
-        always { 
-           deleteDir()
+    post {
+        cleanup {
+            cleanWs()
         }
     }
 }
