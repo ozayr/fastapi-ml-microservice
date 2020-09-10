@@ -2,10 +2,10 @@ pipeline{
     agent any 
 
     stages{
-        stage('unit'){
+        stage('src test'){
             agent {
                 docker {
-                    image  'python:3.7-buster'
+                    image  'python:3.8.5-buster'
                     args '--user 0:0'
                     }
                 }
@@ -35,13 +35,13 @@ pipeline{
                 // stage(){steps{}}
             }
         }
-        stage(''){
+        stage('image test'){
             steps{
-                echo 'welcome to the next stage'
-
+                sh 'docker build --tag=ozayr0116/ml_microservice' .
+                sh 'docker image ls'
+                sh 'docker run --rm -d -p 8000:8000 ozayr0116/ml_microservice'   
+                sh 'curl -X POST "http://localhost:8000/predict"" -H "Content-Type: application/json" -d "{\"data\":[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}"'
             }
-
-
         }
     
     }
