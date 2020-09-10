@@ -57,5 +57,8 @@ pipeline{
         cleanup {
             cleanWs()
         }
+        always{
+            sh 'docker container -f prune'
+        }
     }
 }
