@@ -1,5 +1,5 @@
 pipeline{
-    agent {docker {image  'python:3.7-alpine3.11'}}
+    agent {docker {image  'python:3.7-slim'}}
     stages{
         // stage('checkout'){steps{
         //     git 'https://github.com/ozayr/fastapi-ml-microservice.git'
