@@ -26,6 +26,8 @@ class PredictRequest(BaseModel):
 class PredictResponse(BaseModel):
     data: List[float]
 
+class StatusResponse(BaseModel):
+    status: str
 
 app = FastAPI()
 
@@ -37,6 +39,10 @@ def predict(model_input: PredictRequest, model: Model = Depends(get_model)):
     result = PredictResponse(data=y_pred.tolist())
 
     return result
+
+@app.get("/api/status")
+def predict():
+    return StatusResponse(status='ok!')
 
 
 @app.post("/predict_csv")
