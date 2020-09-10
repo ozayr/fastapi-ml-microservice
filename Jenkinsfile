@@ -36,16 +36,30 @@ pipeline{
             }
         }
         stage('image test'){
-            steps{
-                sh 'docker build --tag=ozayr0116/ml_microservice .' 
-                sh 'docker image ls'
-                sh 'docker run --rm -d -p 8000:8000 --name image_test ozayr0116/ml_microservice'   
-                sh 'sleep 5'
-                script {
-                    final String response = sh(script: 'curl http://localhost:8000/api/status', returnStdout: true).trim()
-                    echo response
+            stages{
+                stage('build  image'){
+                    steps{
+                        sh 'docker build --tag=ozayr0116/ml_microservice .' 
+                        sh 'docker image ls'
+                    }
                 }
-                sh 'docker container stop image_test'
+                stage('run and test API'){
+                    steps{
+                        sh 'docker run --rm -d -p 8000:8000 --name image_test ozayr0116/ml_microservice'   
+                        sh 'sleep 5'
+                        script {
+                            final String response = sh(script: 'curl http://localhost:8000/api/status', returnStdout: true).trim()
+                            echo response
+                        }
+                        sh 'docker container stop image_test'
+                    }
+                    post{
+                        failure{
+                            sh 'docker container stop $(docker ps -a -q)'
+                        }
+                    }
+
+                }
             }
         }
     
@@ -54,10 +68,6 @@ pipeline{
     post {
         cleanup {
             cleanWs()
-        }
-        always{
-            sh 'docker container stop $(docker ps -a -q)'
-            
         }
     }
 }
