@@ -37,7 +37,7 @@ pipeline{
         }
         stage('image test'){
             steps{
-                sh 'docker build --tag=ozayr0116/ml_microservice' .
+                sh 'docker build --tag=ozayr0116/ml_microservice .' 
                 sh 'docker image ls'
                 sh 'docker run --rm -d -p 8000:8000 ozayr0116/ml_microservice'   
                 sh 'curl -X POST "http://localhost:8000/predict"" -H "Content-Type: application/json" -d "{\"data\":[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}"'
