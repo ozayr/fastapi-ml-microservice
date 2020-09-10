@@ -42,9 +42,7 @@ pipeline{
                 sh 'docker run --rm -d -p 8000:8000 --name image_test ozayr0116/ml_microservice'   
                 
                 script {
-                    final String url = "http://localhost:8000/predict"
-                    final String response = sh(script: 'curl -X POST -H "Content-Type: application/json" -d "{\"data\":[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}" $url', returnStdout: true).trim()
-
+                    final String response = sh(script: 'curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d "{\"data\":[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}"', returnStdout: true).trim()
                     echo response
                 }
                 sh 'docker container stop image_test'
@@ -58,7 +56,8 @@ pipeline{
             cleanWs()
         }
         always{
-            sh 'docker container -f prune'
+            sh 'docker container stop $(docker ps -a -q)'
+            
         }
     }
 }
