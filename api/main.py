@@ -41,7 +41,7 @@ def predict(model_input: PredictRequest, model: Model = Depends(get_model)):
     return result
 
 @app.get("/api/status")
-def predict():
+def get_api_status():
     return StatusResponse(status='ok!')
 
 
