@@ -43,7 +43,7 @@ pipeline{
                 
                 script {
                     final String url = "http://localhost:8000/predict"
-                    final String response = sh(script: 'curl -X POST -H "Content-Type: application/json" -d "{\"data\":[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}"  $url', returnStdout: true).trim()
+                    final String response = sh(script: 'curl -X POST -H "Content-Type: application/json" -d "{\"data\":[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}" $url', returnStdout: true).trim()
 
                     echo response
                 }
