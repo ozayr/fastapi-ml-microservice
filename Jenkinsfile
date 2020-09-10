@@ -32,7 +32,7 @@ pipeline{
                     steps{
                         sh 'pytest'
                 }}
-                stage(){steps{}}
+                // stage(){steps{}}
             }
         }
         stage(''){
