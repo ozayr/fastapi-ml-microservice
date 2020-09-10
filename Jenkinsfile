@@ -6,7 +6,7 @@ pipeline{
         // }}
         stage('setup'){
             steps{
-                sh 'cat /etc/*-release'
+                sh 'whoami'
                 // sh 'python3 -m venv test_env'
                 // sh 'source test_env/bin/activate'
                 sh 'pip install --upgrade pip '
