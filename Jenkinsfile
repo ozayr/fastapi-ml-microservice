@@ -5,7 +5,7 @@ pipeline{
         stage('src test'){
             agent {
                 docker {
-                    image  'python:3.6.9-buster'
+                    image  'python:3.7-buster'
                     args '--user 0:0'
                     }
                 }
