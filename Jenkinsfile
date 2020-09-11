@@ -53,21 +53,21 @@ pipeline{
                         }
                         sh 'docker container stop image_test'
                     }
-
+                    post{
+                    failure{
+                        sh 'docker container stop $(docker ps -a -q)'
+                    }
+                }
 
                 }
                 stage('upload image'){
                     steps{
-                        sh 'docker push ozayr0116/ml-microservice:$BUILD_NUMBER'
+                        sh 'docker push ozayr0116/ml-microservice'
                     }
                     
                 }
             }
-            post{
-                failure{
-                    sh 'docker container stop $(docker ps -a -q)'
-                }
-            }
+            
         
                 
             
