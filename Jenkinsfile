@@ -39,13 +39,13 @@ pipeline{
             stages{
                 stage('build  image'){
                     steps{
-                        sh 'docker build --tag=ozayr0116/ml_microservice .' 
+                        sh 'docker build --tag=ozayr0116/ml-microservice .' 
                         sh 'docker image ls'
                     }
                 }
                 stage('run and test API'){
                     steps{
-                        sh 'docker run --rm -d -p 8000:8000 --name image_test ozayr0116/ml_microservice'   
+                        sh 'docker run --rm -d -p 8000:8000 --name image_test ozayr0116/ml-microservice'   
                         sh 'sleep 5'
                         script {
                             final String response = sh(script: 'curl http://localhost:8000/api/status', returnStdout: true).trim()
@@ -58,7 +58,7 @@ pipeline{
                 }
                 stage('upload image'){
                     steps{
-                        sh 'docker push ozayr0116/ml_microservice:latest'
+                        sh 'docker push ozayr0116/ml-microservice:$BUILD_NUMBER'
                     }
                     
                 }
