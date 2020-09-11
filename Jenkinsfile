@@ -60,6 +60,7 @@ pipeline{
                         sh 'docker container stop image_test'
                 
                     }
+                }
                 stage('upload image'){
                     steps{
                         sh 'docker push ozayr0116/ml_microservice:latest'
@@ -67,22 +68,23 @@ pipeline{
                     
                 }
 
+                
+            post{
+                failure{
+                    sh 'docker container stop $(docker ps -a -q)'
                 }
-                    post{
-                        failure{
-                            sh 'docker container stop $(docker ps -a -q)'
-                        }
-                    }
+            }
 
-                }
+                
             }
         }
     
-    }
+    
 
     post {
         cleanup {
             cleanWs()
         }
     }
+}
 }
