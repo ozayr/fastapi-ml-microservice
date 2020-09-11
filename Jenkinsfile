@@ -52,6 +52,8 @@ pipeline{
                             echo response
                         }
                     }
+
+
                 }
 
                 stage('load test'){
@@ -67,24 +69,22 @@ pipeline{
                     }
                     
                 }
-
-                
+            }
             post{
                 failure{
                     sh 'docker container stop $(docker ps -a -q)'
                 }
             }
-
+        
                 
-            }
+            
         }
     
-    
+    }
 
     post {
         cleanup {
             cleanWs()
         }
     }
-}
 }
