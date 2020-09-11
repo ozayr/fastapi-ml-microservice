@@ -51,8 +51,22 @@ pipeline{
                             final String response = sh(script: 'curl http://localhost:8000/api/status', returnStdout: true).trim()
                             echo response
                         }
-                        sh 'docker container stop image_test'
                     }
+
+                stage('load test'){
+                    steps{
+                        sh 'locust -f load_tests/locustfile.py --headless -u 100 -r 100 --run-time 10s  --host=http://localhost:8000' 
+                        sh 'docker container stop image_test'
+                
+                    }
+                stage('upload image'){
+                    steps{
+                        sh 'docker push ozayr0116/ml_microservice:latest'
+                    }
+                    
+                }
+
+                }
                     post{
                         failure{
                             sh 'docker container stop $(docker ps -a -q)'

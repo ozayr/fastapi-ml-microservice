@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-microservice-app
+  namespace: default
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: predictor
+  template:
+    metadata:
+      labels:
+        app: predictor
+    spec:
+      containers:
+        - name: predictor-microservice
+          image: ozayr0116/ml_microservice:latest
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
+            requests:
+              cpu: 200m
+              memory: 100Mi
