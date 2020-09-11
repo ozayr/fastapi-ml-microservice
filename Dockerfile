@@ -1,7 +1,7 @@
 FROM python:3.8.5-slim-buster
 
 COPY ./api /api/api
-COPY requirements.txt /requirements.txt
+COPY requirements_prod.txt /requirements_prod.txt
 
 RUN apt-get update \
     && pip3 install -r requirements_prod.txt \
