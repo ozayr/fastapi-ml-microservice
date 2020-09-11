@@ -17,7 +17,7 @@ pipeline{
                         
                         // withEnv(['HOME=${env.WORKSPACE}']) {
                         sh 'pip install --upgrade pip'
-                        sh 'pip install -r requirements.txt'
+                        sh 'pip install -r requirements_test.txt'
                         //  python stuff
                         // }
                         sh 'wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64' 
