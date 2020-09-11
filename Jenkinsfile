@@ -52,6 +52,7 @@ pipeline{
                             echo response
                         }
                     }
+                }
 
                 stage('load test'){
                     steps{
