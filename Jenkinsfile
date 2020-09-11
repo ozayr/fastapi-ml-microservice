@@ -51,17 +51,10 @@ pipeline{
                             final String response = sh(script: 'curl http://localhost:8000/api/status', returnStdout: true).trim()
                             echo response
                         }
-                    }
-
-
-                }
-
-                stage('load test'){
-                    steps{
-                        sh 'locust -f load_tests/locustfile.py --headless -u 100 -r 100 --run-time 10s  --host=http://localhost:8000' 
                         sh 'docker container stop image_test'
-                
                     }
+
+
                 }
                 stage('upload image'){
                     steps{
