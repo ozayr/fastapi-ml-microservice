@@ -85,7 +85,7 @@ pipeline{
                                 }
 
                             }}}
-                }}
+                }
 
                 stage('inject deployment pods'){
                     steps{
