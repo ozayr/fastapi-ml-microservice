@@ -1,10 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ml-microservice-app
+  name: JOB_NAME-app
   namespace: default
 spec:
-  replicas: 5
+  replicas: 3
+  strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 25%
   selector:
     matchLabels:
       app: predictor
@@ -15,7 +20,7 @@ spec:
     spec:
       containers:
         - name: predictor-microservice
-          image: ozayr0116/ml_microservice:latest
+          image: ORGANISATION/JOB_NAME:BUILD_NUM
           ports:
             - containerPort: 8000
           resources:
@@ -25,3 +30,11 @@ spec:
             requests:
               cpu: 200m
               memory: 100Mi
+          readinessProbe:
+          httpGet:
+             path: /api/status
+             port: 8000
+             initialDelaySeconds: 5
+             periodSeconds: 5
+             successThreshold: 1
+  

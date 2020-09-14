@@ -1,1 +1,1 @@
-curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d '{"data":[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}'
+curl -X POST http://a301763ad3599416bb9fc9ffdb65c2e4-19894022.us-west-2.elb.amazonaws.com:8000/predict -H "Content-Type: application/json" -d '{"data":[[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]]}'

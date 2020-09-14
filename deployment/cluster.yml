@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: Ml-Microservice-Cluster
+  name: JOB_NAME-cluster
   region: us-west-2
 
 nodeGroups:
