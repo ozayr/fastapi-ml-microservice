@@ -43,12 +43,12 @@ pipeline{
 
                 stage('build  image'){
                     steps{
-                        sh 'docker build --tag=${ORGANISATION}/${JOB_NAME}:${BUILD_NUM} .' 
+                        sh 'docker build --tag=${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER} .' 
                         sh 'docker image ls'}}
 
                 stage('run and test API'){
                     steps{
-                        sh 'docker run --rm -d -p 8000:8000 --name image_test ${ORGANISATION}/${JOB_NAME}:${BUILD_NUM}'   
+                        sh 'docker run --rm -d -p 8000:8000 --name image_test ${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER}'   
                         sh 'sleep 5'
                         script {
                             final String response = sh(script: 'curl http://localhost:8000/api/status', returnStdout: true).trim()
@@ -64,9 +64,9 @@ pipeline{
                     steps{
                         withCredentials([usernamePassword(credentialsId: 'docker-login', passwordVariable: 'pass', usernameVariable: 'user')]) {
                             sh 'docker login -u ${user} -p ${pass}'
-                            sh 'docker tag ${ORGANISATION}/${JOB_NAME}:latest'
+                            sh 'docker tag ${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER} ${ORGANISATION}/${JOB_NAME}:latest'
                             sh 'docker push ${ORGANISATION}/${JOB_NAME}:latest'
-                            sh 'docker push ${ORGANISATION}/${JOB_NAME}:${BUILD_NUM}'}}}
+                            sh 'docker push ${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER}'}}}
             }}
 
         stage('deploy'){
@@ -82,7 +82,7 @@ pipeline{
                         }
                     }   
                     sh 'sed "s/JOB_NAME/${JOB_NAME}/g" deployment/deployment.yml'
-                    sh 'sed "s/BUILD_NUM/${BUILD_NUM}/g" deployment/deployment.yml'
+                    sh 'sed "s/BUILD_NUM/${BUILD_NUMBER}/g" deployment/deployment.yml'
                     sh 'sed "s/ORGANISATION/${ORGANISATION}/g" deployment/deployment.yml'
 
                     sh 'kubectl -f apply deployment/deployment.yml'
