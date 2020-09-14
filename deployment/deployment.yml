@@ -6,10 +6,10 @@ metadata:
 spec:
   replicas: 3
   strategy:
-  type: RollingUpdate
-  rollingUpdate:
-    maxSurge: 1
-    maxUnavailable: 25%
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
   selector:
     matchLabels:
       app: predictor
@@ -31,10 +31,10 @@ spec:
               cpu: 200m
               memory: 100Mi
           readinessProbe:
-          httpGet:
-             path: /api/status
-             port: 8000
-             initialDelaySeconds: 5
-             periodSeconds: 5
-             successThreshold: 1
+            httpGet:
+              path: /api/status
+              port: 8000
+              initialDelaySeconds: 5
+              periodSeconds: 5
+              successThreshold: 1
   

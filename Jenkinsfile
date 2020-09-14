@@ -94,7 +94,7 @@ pipeline{
                             sh 'sed -i "s/BUILD_NUM/${BUILD_NUMBER}/g" deployment/deployment.yml'
                             sh 'sed -i "s/ORGANISATION/${ORGANISATION}/g" deployment/deployment.yml'
 
-                            sh 'kubectl -f apply deployment/deployment.yml'
+                            sh 'kubectl apply -f deployment/deployment.yml'
                             sh 'kubectl rollout status deployment.v1.apps/${JOB_NAME}-app'
                          }
                 // load_balancer_ip = sh()
