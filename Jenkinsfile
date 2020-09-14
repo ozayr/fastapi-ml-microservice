@@ -63,7 +63,6 @@ pipeline{
                 stage('upload image'){
                     steps{
                         withCredentials([usernamePassword(credentialsId: 'docker-login', passwordVariable: 'pass', usernameVariable: 'user')]) {
-                            sh 'docker login -u ${user} -p ${pass}'
                             sh 'docker tag ${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER} ${ORGANISATION}/${JOB_NAME}:latest'
                             sh 'docker push ${ORGANISATION}/${JOB_NAME}:latest'
                             sh 'docker push ${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER}'}}}
