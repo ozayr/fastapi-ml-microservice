@@ -75,14 +75,14 @@ pipeline{
                         cluster = sh(script: 'aws eks list-clusters --query "clusters[*]" --output=text', returnStdout: true).trim()
                         
                         if(cluster.isEmpty()){
-                            sh 'sed "s/JOB_NAME/${JOB_NAME}/g" deployment/cluster.yml'
+                            sh 'sed -i "s/JOB_NAME/${JOB_NAME}/g" deployment/cluster.yml'
                             sh 'eksctl create cluster -f deployment/cluster.yml'
                             sh 'kubectl create -f loadbalancer.yaml'
                         }
                     }   
-                    sh 'sed "s/JOB_NAME/${JOB_NAME}/g" deployment/deployment.yml'
-                    sh 'sed "s/BUILD_NUM/${BUILD_NUMBER}/g" deployment/deployment.yml'
-                    sh 'sed "s/ORGANISATION/${ORGANISATION}/g" deployment/deployment.yml'
+                    sh 'sed -i "s/JOB_NAME/${JOB_NAME}/g" deployment/deployment.yml'
+                    sh 'sed -i "s/BUILD_NUM/${BUILD_NUMBER}/g" deployment/deployment.yml'
+                    sh 'sed -i "s/ORGANISATION/${ORGANISATION}/g" deployment/deployment.yml'
 
                     sh 'kubectl -f apply deployment/deployment.yml'
                     sh 'kubectl rollout status deployment.v1.apps/${JOB_NAME}-app'
@@ -107,6 +107,8 @@ pipeline{
     post {
         cleanup {
             cleanWs()}
-        
+        // failure{
+        //     sh 'docker rmi ${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER}'
+        // }
 
 }}
