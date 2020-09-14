@@ -43,12 +43,12 @@ pipeline{
 
                 stage('build  image'){
                     steps{
-                        sh 'docker build --tag=${env.ORGANISATION}/${JOB_NAME}:${BUILD_NUM} .' 
+                        sh 'docker build --tag=${ORGANISATION}/${JOB_NAME}:${BUILD_NUM} .' 
                         sh 'docker image ls'}}
 
                 stage('run and test API'){
                     steps{
-                        sh 'docker run --rm -d -p 8000:8000 --name image_test ${env.ORGANISATION}/${JOB_NAME}:${BUILD_NUM}'   
+                        sh 'docker run --rm -d -p 8000:8000 --name image_test ${ORGANISATION}/${JOB_NAME}:${BUILD_NUM}'   
                         sh 'sleep 5'
                         script {
                             final String response = sh(script: 'curl http://localhost:8000/api/status', returnStdout: true).trim()
@@ -64,9 +64,9 @@ pipeline{
                     steps{
                         withCredentials([usernamePassword(credentialsId: 'docker-login', passwordVariable: 'pass', usernameVariable: 'user')]) {
                             sh 'docker login -u ${user} -p ${pass}'
-                            sh 'docker tag ${env.ORGANISATION}/${JOB_NAME}:latest'
-                            sh 'docker push ${env.ORGANISATION}/${JOB_NAME}:latest'
-                            sh 'docker push ${env.ORGANISATION}/${JOB_NAME}:${BUILD_NUM}'}}}
+                            sh 'docker tag ${ORGANISATION}/${JOB_NAME}:latest'
+                            sh 'docker push ${ORGANISATION}/${JOB_NAME}:latest'
+                            sh 'docker push ${ORGANISATION}/${JOB_NAME}:${BUILD_NUM}'}}}
             }}
 
         stage('deploy'){
