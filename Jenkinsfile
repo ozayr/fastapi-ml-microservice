@@ -65,34 +65,42 @@ pipeline{
                         withCredentials([usernamePassword(credentialsId: 'docker-login', passwordVariable: 'pass', usernameVariable: 'user')]) {
                             sh 'docker tag ${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER} ${ORGANISATION}/${JOB_NAME}:latest'
                             sh 'docker push ${ORGANISATION}/${JOB_NAME}:latest'
-                            sh 'docker push ${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER}'}}}
+                            sh 'docker push ${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER}'
+                            sh 'docker rmi ${ORGANISATION}/${JOB_NAME}:latest ${ORGANISATION}/${JOB_NAME}:${BUILD_NUMBER}'}}}
             }}
 
         stage('deploy'){
-            steps{
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: '55b1102a-33af-4b8f-95a0-14ec04c80e47', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                    script{
-                        cluster = sh(script: 'aws eks list-clusters --query "clusters[*]" --output=text', returnStdout: true).trim()
-                        
-                        if(cluster.isEmpty()){
-                            sh 'sed -i "s/JOB_NAME/${JOB_NAME}/g" deployment/cluster.yml'
-                            sh 'eksctl create cluster -f deployment/cluster.yml'
-                            sh 'kubectl create -f loadbalancer.yaml'
-                        }
-                    }   
-                    sh 'sed -i "s/JOB_NAME/${JOB_NAME}/g" deployment/deployment.yml'
-                    sh 'sed -i "s/BUILD_NUM/${BUILD_NUMBER}/g" deployment/deployment.yml'
-                    sh 'sed -i "s/ORGANISATION/${ORGANISATION}/g" deployment/deployment.yml'
+            stages{
+                stage('create cluster'){
+                    steps{
+                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: '55b1102a-33af-4b8f-95a0-14ec04c80e47', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                            script{
+                                cluster = sh(script: 'aws eks list-clusters --query "clusters[*]" --output=text', returnStdout: true).trim()
+                                
+                                if(cluster.isEmpty()){
+                                    sh 'sed -i "s/JOB_NAME/${JOB_NAME}/g" deployment/cluster.yml'
+                                    sh 'eksctl create cluster -f deployment/cluster.yml'
+                                    sh 'sed -i "s/JOB_NAME/${JOB_NAME}/g" deployment/loadbalancer.yml'
+                                    sh 'kubectl create -f deployment/loadbalancer.yml'
+                                }
 
-                    sh 'kubectl -f apply deployment/deployment.yml'
-                    sh 'kubectl rollout status deployment.v1.apps/${JOB_NAME}-app'
-                    
-                    // load_balancer_ip = sh()
-                    // slackSend channel:'#levelup',
-                    //             message:'load balancer IP ${load_balancer_ip}'
-                    
-                        
-                    }}
+                            }}}
+                }}
+
+                stage('inject deployment pods'){
+                    steps{
+                         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: '55b1102a-33af-4b8f-95a0-14ec04c80e47', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                            sh 'sed -i "s/JOB_NAME/${JOB_NAME}/g" deployment/deployment.yml'
+                            sh 'sed -i "s/BUILD_NUM/${BUILD_NUMBER}/g" deployment/deployment.yml'
+                            sh 'sed -i "s/ORGANISATION/${ORGANISATION}/g" deployment/deployment.yml'
+
+                            sh 'kubectl -f apply deployment/deployment.yml'
+                            sh 'kubectl rollout status deployment.v1.apps/${JOB_NAME}-app'
+                         }
+                // load_balancer_ip = sh()
+                // slackSend channel:'#levelup',
+                //             message:'load balancer IP ${load_balancer_ip}'
+                }}}
 
         post{
             failure{
