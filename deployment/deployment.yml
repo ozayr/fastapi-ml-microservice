@@ -34,7 +34,5 @@ spec:
             httpGet:
               path: /api/status
               port: 8000
-              initialDelaySeconds: 5
-              periodSeconds: 5
-              successThreshold: 1
+              
   
