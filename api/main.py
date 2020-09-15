@@ -44,7 +44,7 @@ def predict(model_input: PredictRequest, model: Model = Depends(get_model)):
 def get_api_status():
     return StatusResponse(status=200)
 
-this comment will break the lint
+# this comment will break the lint
 
 @app.post("/predict_csv")
 def predict_csv(csv_file: UploadFile = File(...), model: Model = Depends(get_model)):
